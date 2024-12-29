@@ -6,14 +6,84 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DE6052492CFB845E0019CE11 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE6052482CFB845E0019CE11 /* WidgetKit.framework */; };
+		DE60524B2CFB845E0019CE11 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE60524A2CFB845E0019CE11 /* SwiftUI.framework */; };
+		DE6052562CFB84610019CE11 /* TimerActivityWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DE6052462CFB845E0019CE11 /* TimerActivityWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DE6052542CFB84610019CE11 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE6052272CFB842D0019CE11 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DE6052452CFB845E0019CE11;
+			remoteInfo = TimerActivityWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DE60525B2CFB84610019CE11 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DE6052562CFB84610019CE11 /* TimerActivityWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		DE60522F2CFB842D0019CE11 /* LiveTimerActivity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveTimerActivity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE6052462CFB845E0019CE11 /* TimerActivityWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerActivityWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE6052482CFB845E0019CE11 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		DE60524A2CFB845E0019CE11 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DE6052572CFB84610019CE11 /* Exceptions for "TimerActivityWidget" folder in "TimerActivityWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */;
+		};
+		DE60525D2CFB849E0019CE11 /* Exceptions for "TimerActivityWidget" folder in "LiveTimerActivity" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TimerActivityWidget.swift,
+			);
+			target = DE60522E2CFB842D0019CE11 /* LiveTimerActivity */;
+		};
+		DE6052692CFC652C0019CE11 /* Exceptions for "LiveTimerActivity" folder in "TimerActivityWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TimerIntent.swift,
+				TimerManager.swift,
+			);
+			target = DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DE6052312CFB842D0019CE11 /* LiveTimerActivity */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DE6052692CFC652C0019CE11 /* Exceptions for "LiveTimerActivity" folder in "TimerActivityWidgetExtension" target */,
+			);
 			path = LiveTimerActivity;
+			sourceTree = "<group>";
+		};
+		DE60524C2CFB845E0019CE11 /* TimerActivityWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DE60525D2CFB849E0019CE11 /* Exceptions for "TimerActivityWidget" folder in "LiveTimerActivity" target */,
+				DE6052572CFB84610019CE11 /* Exceptions for "TimerActivityWidget" folder in "TimerActivityWidgetExtension" target */,
+			);
+			path = TimerActivityWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +96,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DE6052432CFB845E0019CE11 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE60524B2CFB845E0019CE11 /* SwiftUI.framework in Frameworks */,
+				DE6052492CFB845E0019CE11 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -33,6 +112,8 @@
 			isa = PBXGroup;
 			children = (
 				DE6052312CFB842D0019CE11 /* LiveTimerActivity */,
+				DE60524C2CFB845E0019CE11 /* TimerActivityWidget */,
+				DE6052472CFB845E0019CE11 /* Frameworks */,
 				DE6052302CFB842D0019CE11 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +122,18 @@
 			isa = PBXGroup;
 			children = (
 				DE60522F2CFB842D0019CE11 /* LiveTimerActivity.app */,
+				DE6052462CFB845E0019CE11 /* TimerActivityWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DE6052472CFB845E0019CE11 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DE6052482CFB845E0019CE11 /* WidgetKit.framework */,
+				DE60524A2CFB845E0019CE11 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,10 +146,12 @@
 				DE60522B2CFB842D0019CE11 /* Sources */,
 				DE60522C2CFB842D0019CE11 /* Frameworks */,
 				DE60522D2CFB842D0019CE11 /* Resources */,
+				DE60525B2CFB84610019CE11 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DE6052552CFB84610019CE11 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				DE6052312CFB842D0019CE11 /* LiveTimerActivity */,
@@ -69,6 +162,28 @@
 			productName = LiveTimerActivity;
 			productReference = DE60522F2CFB842D0019CE11 /* LiveTimerActivity.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE6052582CFB84610019CE11 /* Build configuration list for PBXNativeTarget "TimerActivityWidgetExtension" */;
+			buildPhases = (
+				DE6052422CFB845E0019CE11 /* Sources */,
+				DE6052432CFB845E0019CE11 /* Frameworks */,
+				DE6052442CFB845E0019CE11 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DE60524C2CFB845E0019CE11 /* TimerActivityWidget */,
+			);
+			name = TimerActivityWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = TimerActivityWidgetExtension;
+			productReference = DE6052462CFB845E0019CE11 /* TimerActivityWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +196,9 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					DE60522E2CFB842D0019CE11 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					DE6052452CFB845E0019CE11 = {
 						CreatedOnToolsVersion = 16.0;
 					};
 				};
@@ -100,12 +218,20 @@
 			projectRoot = "";
 			targets = (
 				DE60522E2CFB842D0019CE11 /* LiveTimerActivity */,
+				DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DE60522D2CFB842D0019CE11 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE6052442CFB845E0019CE11 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +248,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DE6052422CFB845E0019CE11 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DE6052552CFB84610019CE11 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */;
+			targetProxy = DE6052542CFB84610019CE11 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DE60523B2CFB842F0019CE11 /* Debug */ = {
@@ -255,6 +396,7 @@
 				DEVELOPMENT_TEAM = VL33G45KAQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +426,7 @@
 				DEVELOPMENT_TEAM = VL33G45KAQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -296,6 +439,60 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.navin.LiveTimerActivity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DE6052592CFB84610019CE11 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VL33G45KAQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimerActivityWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimerActivityWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.navin.LiveTimerActivity.TimerActivityWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DE60525A2CFB84610019CE11 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VL33G45KAQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimerActivityWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimerActivityWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.navin.LiveTimerActivity.TimerActivityWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -319,6 +516,15 @@
 			buildConfigurations = (
 				DE60523E2CFB842F0019CE11 /* Debug */,
 				DE60523F2CFB842F0019CE11 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DE6052582CFB84610019CE11 /* Build configuration list for PBXNativeTarget "TimerActivityWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE6052592CFB84610019CE11 /* Debug */,
+				DE60525A2CFB84610019CE11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

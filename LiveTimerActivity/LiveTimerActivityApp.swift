@@ -11,7 +11,7 @@ import SwiftUI
 struct LiveTimerActivityApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+          TimerView()
         }
     }
 }

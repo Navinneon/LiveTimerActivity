@@ -7,7 +7,25 @@
 		<key>LiveTimerActivity.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>TimerActivityWidgetExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>DE60522E2CFB842D0019CE11</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DE6052452CFB845E0019CE11</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
