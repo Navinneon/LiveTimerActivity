@@ -16,8 +16,16 @@ struct TimerView: View {
         .font(.largeTitle)
         .bold()
       
-      Text("Elapsed Time: \(Int(timerManager.elapsedTime)) seconds")
-        .font(.title)
+      if !timerManager.isTimerRunning {
+        Text(getExactTime(from: Date()))
+          .font(.title)
+      } else if timerManager.isPaused {
+        Text(getExactTime(from: timerManager.adjustedStartDate))
+          .font(.title)
+      } else {
+        Text(timerManager.adjustedStartDate, style: .relative)
+          .font(.title)
+      }
       
       HStack(spacing: 20) {
         if !timerManager.isTimerRunning {
@@ -75,6 +83,21 @@ struct TimerView: View {
   private func stopTimer() {
     Task {
       await timerManager.stopTimerActivity()
+    }
+  }
+  
+  func getExactTime(from startDate: Date) -> String {
+    let elapsed = Int(Date().timeIntervalSince(startDate))
+    let hours = elapsed / 3600
+    let minutes = (elapsed % 3600) / 60
+    let seconds = elapsed % 60
+    
+    if hours > 0 {
+      return String(format: "%d hr, %d min, %d secs", hours, minutes, seconds)
+    } else if minutes > 0 {
+      return String(format: "%d min, %d secs", minutes, seconds)
+    } else {
+      return String(format: "%d secs", seconds)
     }
   }
 }

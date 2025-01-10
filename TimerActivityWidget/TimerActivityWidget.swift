@@ -16,24 +16,37 @@ struct TimerActivityDynamicIsland: Widget {
       VStack {
         Text(context.attributes.timerName)
           .font(.headline)
-        Text("\(Int(context.state.elapsedTime)) seconds elapsed")
-          .font(.title3)
+        if context.state.isPaused {
+          Text(getExactTime(from: context.state.adjustedStartDate))
+            .font(.title3)
+        } else {
+          Text(context.state.adjustedStartDate, style: .relative)
+            .font(.title3)
+        }
       }
       .padding()
     } dynamicIsland: { context in
       DynamicIsland {
         // Expanded Dynamic Island
         DynamicIslandExpandedRegion(.center) {
-          VStack(spacing: 12) {
-            ProgressView(value: context.state.elapsedTime, total: 300)
-              .progressViewStyle(LinearProgressViewStyle(tint: .blue))
-              .frame(height: 16)
-              .cornerRadius(8)
+          VStack(alignment: .center, spacing: 12) {
+            //            ProgressView(value: context.state.elapsedTime, total: 300)
+            //              .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+            //              .frame(height: 16)
+            //              .cornerRadius(8)
             
-            Text("\(Int(context.state.elapsedTime)) seconds")
-              .font(.title2)
-              .bold()
-              .foregroundColor(.white)
+            if context.state.isPaused {
+              Text(getExactTime(from: context.state.adjustedStartDate))
+                .font(.title2)
+                .bold()
+                .foregroundColor(.white)
+            } else {
+              // Show dynamic relative time when running
+              Text(context.state.adjustedStartDate, style: .relative)
+                .font(.title2)
+                .bold()
+                .foregroundColor(.white)
+            }
           }
           .padding(.horizontal)
         }
@@ -41,9 +54,9 @@ struct TimerActivityDynamicIsland: Widget {
           HStack(spacing: 20) {
             // Play/Pause button
             Button(intent: PlayPauseTimerIntent()) {
-                Image(systemName: context.state.isPaused ? "play.fill" : "pause.fill")
-                    .font(.title2)
-                    .foregroundColor(.white)
+              Image(systemName: context.state.isPaused ? "play.fill" : "pause.fill")
+                .font(.title2)
+                .foregroundColor(.white)
             }
             
             // Stop button
@@ -63,6 +76,21 @@ struct TimerActivityDynamicIsland: Widget {
         Image(systemName: "timer")
           .foregroundColor(.blue)
       }
+    }
+  }
+  
+  func getExactTime(from startDate: Date) -> String {
+    let elapsed = Int(Date().timeIntervalSince(startDate))
+    let hours = elapsed / 3600
+    let minutes = (elapsed % 3600) / 60
+    let seconds = elapsed % 60
+    
+    if hours > 0 {
+      return String(format: "%d hr, %d min, %d secs", hours, minutes, seconds)
+    } else if minutes > 0 {
+      return String(format: "%d min, %d secs", minutes, seconds)
+    } else {
+      return String(format: "%d secs", seconds)
     }
   }
 }
