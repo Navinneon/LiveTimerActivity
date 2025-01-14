@@ -55,14 +55,15 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TimerActivityWidget.swift,
+				TimerIntent.swift,
 			);
 			target = DE60522E2CFB842D0019CE11 /* LiveTimerActivity */;
 		};
 		DE6052692CFC652C0019CE11 /* Exceptions for "LiveTimerActivity" folder in "TimerActivityWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				TimerIntent.swift,
-				TimerManager.swift,
+				Timer/Model/TimerActivityAttributes.swift,
+				Timer/ViewModel/TimerManager.swift,
 			);
 			target = DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */;
 		};
