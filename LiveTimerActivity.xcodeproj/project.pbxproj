@@ -64,6 +64,8 @@
 			membershipExceptions = (
 				Timer/Model/TimerActivityAttributes.swift,
 				Timer/ViewModel/TimerManager.swift,
+				Timer/ViewModel/TimerType.swift,
+				Timer/ViewModel/Utils.swift,
 			);
 			target = DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */;
 		};

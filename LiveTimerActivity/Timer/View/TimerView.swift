@@ -8,11 +8,19 @@
 import SwiftUI
 
 struct TimerView: View {
-  @StateObject private var timerManager = TimerManager.shared
+  @StateObject private var timerManager: TimerManager
+      
+  init(timerType: TimerType) {
+    _timerManager = StateObject(wrappedValue: TimerManagerRegistry.shared.getTimerManager(for: timerType.rawValue))
+  }
   
   var body: some View {
+    mainView
+  }
+  
+  private var mainView: some View {
     VStack(spacing: 20) {
-      headerView
+      titleView
       timerStatusView
       controlButtonsView
     }
@@ -20,7 +28,7 @@ struct TimerView: View {
   }
   
   private func startTimer() {
-    timerManager.startTimerActivity(timerName: "Timer")
+    timerManager.startTimerActivity()
   }
   
   private func stopTimer() {
@@ -29,19 +37,19 @@ struct TimerView: View {
     }
   }
   
-  private var headerView: some View {
-    Text("Dynamic Island Timer")
-      .font(.largeTitle)
+  private var titleView: some View {
+    Text(timerManager.timerName)
+      .font(.title2)
       .bold()
   }
   
   private var timerStatusView: some View {
     Group {
       if !timerManager.isTimerRunning {
-        Text(timerManager.getExactTime(from: Date()))
+        Text(Utils.getExactTime(from: Date()))
           .font(.title)
       } else if timerManager.isPaused {
-        Text(timerManager.getExactTime(from: timerManager.adjustedStartDate))
+        Text(Utils.getExactTime(from: timerManager.adjustedStartDate))
           .font(.title)
       } else {
         Text(timerManager.adjustedStartDate, style: .relative)
@@ -63,9 +71,13 @@ struct TimerView: View {
       if !timerManager.isTimerRunning {
         actionButton(title: "Start Timer", color: .green, action: startTimer)
       } else if timerManager.isPaused {
-        actionButton(title: "Resume Timer", color: .blue, action: timerManager.togglePause)
+        actionButton(title: "Resume Timer", color: .blue) {
+          timerManager.togglePause()
+        }
       } else {
-        actionButton(title: "Pause Timer", color: .yellow, action: timerManager.togglePause)
+        actionButton(title: "Pause Timer", color: .yellow) {
+          timerManager.togglePause()
+        }
       }
     }
   }

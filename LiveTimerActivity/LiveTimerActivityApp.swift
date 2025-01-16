@@ -9,9 +9,31 @@ import SwiftUI
 
 @main
 struct LiveTimerActivityApp: App {
-    var body: some Scene {
-        WindowGroup {
-          TimerView()
+  var body: some Scene {
+    WindowGroup {
+      ScrollView {
+        VStack(spacing: 20) {
+          headerView
+          timerView
         }
+      }
     }
+  }
+  
+  private var headerView: some View {
+    Text("Live Activity")
+      .font(.title)
+      .bold()
+  }
+  
+  private var timerView: some View {
+    VStack(spacing: 20) {
+      TimerView(timerType: .first)
+      Divider()
+      TimerView(timerType: .second)
+      Divider()
+      TimerView(timerType: .third)
+    }
+  }
 }
+

@@ -13,7 +13,7 @@ import AppIntents
 // MARK: - TimerActivityDynamicIsland Widget
 
 struct TimerActivityDynamicIsland: Widget {
-    
+  
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: TimerActivityAttributes.self) { context in
       timerLockScreenView(context: context)
@@ -44,7 +44,7 @@ struct TimerActivityDynamicIsland: Widget {
     context: ActivityViewContext<TimerActivityAttributes>,
     foregroundColor: Color) -> some View {
       VStack {
-        Text("Timer")
+        Text(context.attributes.timerName)
           .bold()
           .foregroundColor(foregroundColor)
         
@@ -55,7 +55,7 @@ struct TimerActivityDynamicIsland: Widget {
             .rotationEffect(.degrees(context.state.isPaused ? 180 : 0))
           
           if context.state.isPaused {
-            Text(TimerManager.shared.getExactTime(from: context.state.adjustedStartDate))
+            Text(Utils.getExactTime(from: context.state.adjustedStartDate))
               .bold()
               .foregroundColor(foregroundColor)
               .multilineTextAlignment(.center)
@@ -84,14 +84,14 @@ struct TimerActivityDynamicIsland: Widget {
     foregroundColor: Color) -> some View {
       HStack(spacing: 20) {
         // Play/Pause button
-        Button(intent: PlayPauseTimerIntent()) {
+        Button(intent: PlayPauseTimerIntent(timerName: context.attributes.timerName)) {
           Image(systemName: context.state.isPaused ? "play.fill" : "pause.fill")
             .bold()
             .foregroundColor(foregroundColor)
         }
         
         // Stop button
-        Button(intent: StopTimerIntent()) {
+        Button(intent: StopTimerIntent(timerName: context.attributes.timerName)) {
           Image(systemName: "stop.fill")
             .bold()
             .foregroundColor(foregroundColor)
