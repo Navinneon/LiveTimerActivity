@@ -11,7 +11,7 @@ struct TimerView: View {
   @StateObject private var timerManager: TimerManager
       
   init(timerType: TimerType) {
-    _timerManager = StateObject(wrappedValue: TimerManagerRegistry.shared.getTimerManager(for: timerType.rawValue))
+    _timerManager = StateObject(wrappedValue: TimerManager(timerName: timerType.rawValue))
   }
   
   var body: some View {

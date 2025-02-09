@@ -29,9 +29,7 @@ struct LiveTimerActivityApp: App {
   private var timerView: some View {
     VStack(spacing: 20) {
       TimerView(timerType: .first)
-      Divider()
       TimerView(timerType: .second)
-      Divider()
       TimerView(timerType: .third)
     }
   }

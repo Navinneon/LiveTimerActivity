@@ -7,37 +7,15 @@
 
 
 import AppIntents
+import CoreData
 
-@available(iOS 16.0, *)
-struct StopTimerIntent: LiveActivityIntent {
-  // Define the title for the intent, using a localized string.
-  static var title: LocalizedStringResource = "Stop Timer"
-  
-  var timerName: String?
-  
-  init() {}
-  
-  init(timerName: String) {
-    self.timerName = timerName
-  }
-  
-  // Perform the action when the intent is triggered
-  func perform() async throws -> some IntentResult {
-    guard let timerName = timerName else {
-      throw NSError(domain: "StopTimerIntentError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Timer type is missing"])
-    }
-    
-    let timerManager = await TimerManagerRegistry.shared.getTimerManager(for: timerName)
-    await timerManager.stopTimerActivity()
-    return .result()
-  }
-}
+import AppIntents
 
 @available(iOS 16.0, *)
 struct PlayPauseTimerIntent: LiveActivityIntent {
   static var title: LocalizedStringResource = "Play/Pause Timer"
   
-  @Parameter(title: "timerName")
+  @Parameter(title: "Timer Name")
   var timerName: String?
   
   init() {}
@@ -51,9 +29,39 @@ struct PlayPauseTimerIntent: LiveActivityIntent {
       throw NSError(domain: "PlayPauseTimerIntentError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Timer name is missing"])
     }
     
-    let timerManager = await TimerManagerRegistry.shared.getTimerManager(for: timerName)
-    await timerManager.togglePause()
+    let timerDataManager = TimerDataManager.shared
     
+    // Fetch existing timer from Core Data
+    if let timer = timerDataManager.fetchTimer(for: timerName) {
+      timer.isPaused.toggle() // Toggle play/pause state
+      timerDataManager.saveContext() // Save changes
+    } else {
+      throw NSError(domain: "PlayPauseTimerIntentError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Timer not found"])
+    }
+    
+    return .result()
+  }
+}
+
+@available(iOS 16.0, *)
+struct StopTimerIntent: LiveActivityIntent {
+  static var title: LocalizedStringResource = "Stop Timer"
+  
+  @Parameter(title: "Timer Name")
+  var timerName: String?
+  
+  init() {}
+  
+  init(timerName: String) {
+    self.timerName = timerName
+  }
+  
+  func perform() async throws -> some IntentResult {
+    guard let timerName = timerName else {
+      throw NSError(domain: "StopTimerIntentError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Timer name is missing"])
+    }
+    let timerDataManager = TimerDataManager.shared
+    timerDataManager.deleteTimer(name: timerName)
     
     return .result()
   }

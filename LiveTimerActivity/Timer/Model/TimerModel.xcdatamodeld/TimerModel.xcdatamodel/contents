@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24D60" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="TimerEntity" representedClassName="TimerEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="activityID" optional="YES" attributeType="String"/>
+        <attribute name="adjustedStartDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isPaused" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="pauseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="timerName" attributeType="String"/>
+    </entity>
+</model>
