@@ -23,7 +23,7 @@ class TimerManager: ObservableObject {
     loadExistingTimer()
   }
   
-  /// Loads an existing timer if available.
+  /// Loads any existing timer from Core Data and attempts to restore its Live Activity
   private func loadExistingTimer() {
     guard let timer = TimerDataManager.shared.fetchTimer(for: timerName) else {
       print("No existing timer found for \(timerName)")
@@ -31,24 +31,51 @@ class TimerManager: ObservableObject {
     }
     
     isPaused = timer.isPaused
-    pauseDate = timer.pauseDate
+    pauseDate = timer.pauseDate ?? Date()
     adjustedStartDate = timer.adjustedStartDate ?? Date()
-    isTimerRunning = timer.activityID != nil
+    isTimerRunning = false // Assume false initially
     
-    if let activityID = timer.activityID {
-      restoreLiveActivity(activityID)
+    // Try restoring an existing Live Activity by timerName instead of activityID
+    if let existingActivity = Activity<TimerActivityAttributes>.activities.first(
+      where: { $0.attributes.timerName == timerName }
+    ) {
+      print("Restoring existing Live Activity for \(timerName)")
+      self.activity = existingActivity
+      isTimerRunning = true
+      return
+    } else {
+      startTimerActivityFromSavedState(timer)
     }
   }
-  
-  /// Attempts to restore an existing Live Activity
-  private func restoreLiveActivity(_ activityID: String) {
-    guard let existingActivity = Activity<TimerActivityAttributes>.activities.first(where: { $0.id == activityID }) else {
-      print("Existing Live Activity not found, starting new one")
-      startTimerActivity()
+
+  /// Starts a new Live Activity using stored Core Data values
+  private func startTimerActivityFromSavedState(_ timer: TimerEntity) {
+    guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+      print("Live Activities are not enabled")
       return
     }
-    self.activity = existingActivity
+    
+    let attributes = TimerActivityAttributes(timerName: timer.timerName ?? "Unknown")
+    let contentState = TimerActivityAttributes.ContentState(
+      isPaused: timer.isPaused,
+      adjustedStartDate: timer.adjustedStartDate ?? Date()
+    )
+    
+    do {
+      let activity = try Activity<TimerActivityAttributes>.request(
+        attributes: attributes,
+        content: .init(state: contentState, staleDate: nil),
+        pushType: nil
+      )
+      self.activity = activity
+      isTimerRunning = true
+      print("Successfully restarted Live Activity for \(timer.timerName ?? "Unknown")")
+    } catch {
+      print("Failed to restart Live Activity: \(error.localizedDescription)")
+    }
   }
+
+
   
   /// Starts a new Live Activity and creates a new timer if needed
   func startTimerActivity() {
