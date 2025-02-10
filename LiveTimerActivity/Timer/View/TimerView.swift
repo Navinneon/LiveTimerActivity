@@ -9,10 +9,10 @@ import SwiftUI
 
 struct TimerView: View {
   @Environment(\.scenePhase) var scenePhase
-  @StateObject private var timerManager: TimerManager
+  @StateObject private var viewModel: TimerViewModel
       
   init(timerType: TimerType) {
-    _timerManager = StateObject(wrappedValue: TimerManager(timerName: timerType.rawValue))
+    _viewModel = StateObject(wrappedValue: TimerViewModel(timerName: timerType.rawValue))
   }
   
   var body: some View {
@@ -20,7 +20,7 @@ struct TimerView: View {
       .onChange(of: scenePhase) { oldPhase, newPhase in
         if newPhase == .active {
           Task {
-            timerManager.loadExistingTimer()
+            viewModel.loadExistingTimer()
           }
         }
       }
@@ -36,39 +36,39 @@ struct TimerView: View {
   }
   
   private func startTimer() {
-    timerManager.startTimerActivity()
+    viewModel.startTimerActivity()
   }
   
   private func stopTimer() {
     Task {
-      await timerManager.stopTimerActivity()
+      await viewModel.stopTimerActivity()
     }
   }
   
   private var titleView: some View {
-    Text(timerManager.timerName)
+    Text(viewModel.timerName)
       .font(.title2)
       .bold()
   }
   
   private var timerStatusView: some View {
     Group {
-      if !timerManager.isTimerRunning {
+      if !viewModel.isTimerRunning {
         // Show elapsed time from adjustedStartDate (not running)
-        Text(Utils.getExactTime(from: timerManager.adjustedStartDate))
+        Text(Utils.getExactTime(from: viewModel.adjustedStartDate))
           .font(.title)
-      } else if timerManager.isPaused {
+      } else if viewModel.isPaused {
         // Show elapsed time from adjustedStartDate to pauseDate
-        if let pauseDate = timerManager.pauseDate {
-          Text(Utils.getExactTime(from: timerManager.adjustedStartDate, to: pauseDate))
+        if let pauseDate = viewModel.pauseDate {
+          Text(Utils.getExactTime(from: viewModel.adjustedStartDate, to: pauseDate))
             .font(.title)
         } else {
-          Text(Utils.getExactTime(from: timerManager.adjustedStartDate))
+          Text(Utils.getExactTime(from: viewModel.adjustedStartDate))
             .font(.title)
         }
       } else {
         // Show live updating relative time
-        Text(timerManager.adjustedStartDate, style: .relative)
+        Text(viewModel.adjustedStartDate, style: .relative)
           .font(.title)
       }
     }
@@ -84,15 +84,15 @@ struct TimerView: View {
   
   private var startPauseButton: some View {
     Group {
-      if !timerManager.isTimerRunning {
+      if !viewModel.isTimerRunning {
         actionButton(title: "Start Timer", color: .green, action: startTimer)
-      } else if timerManager.isPaused {
+      } else if viewModel.isPaused {
         actionButton(title: "Resume Timer", color: .blue) {
-          timerManager.togglePause()
+          viewModel.togglePause()
         }
       } else {
         actionButton(title: "Pause Timer", color: .yellow) {
-          timerManager.togglePause()
+          viewModel.togglePause()
         }
       }
     }
@@ -100,7 +100,7 @@ struct TimerView: View {
   
   private var stopButton: some View {
     actionButton(title: "Stop Timer", color: .red, action: stopTimer)
-      .disabled(!timerManager.isTimerRunning)
+      .disabled(!viewModel.isTimerRunning)
   }
   
   private func actionButton(title: String, color: Color, action: @escaping () -> Void) -> some View {

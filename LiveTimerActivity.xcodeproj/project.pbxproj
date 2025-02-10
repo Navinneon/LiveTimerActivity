@@ -65,7 +65,7 @@
 				Timer/Model/TimerActivityAttributes.swift,
 				Timer/Model/TimerModel.xcdatamodeld,
 				Timer/ViewModel/TimerDataManager.swift,
-				Timer/ViewModel/TimerManager.swift,
+				Timer/ViewModel/TimerViewModel.swift,
 				Timer/ViewModel/Utils.swift,
 			);
 			target = DE6052452CFB845E0019CE11 /* TimerActivityWidgetExtension */;

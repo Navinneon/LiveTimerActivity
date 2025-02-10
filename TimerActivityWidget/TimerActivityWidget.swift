@@ -16,6 +16,7 @@ struct TimerActivityDynamicIsland: Widget {
   
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: TimerActivityAttributes.self) { context in
+      // Lock Screen view
       timerLockScreenView(context: context)
     } dynamicIsland: { context in
       DynamicIsland {

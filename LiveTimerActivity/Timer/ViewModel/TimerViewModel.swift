@@ -9,7 +9,7 @@ import SwiftUI
 import ActivityKit
 
 @MainActor
-class TimerManager: ObservableObject {
+class TimerViewModel: ObservableObject {
   @Published var isPaused: Bool = false
   @Published var isTimerRunning: Bool = false
   @Published var pauseDate: Date?
