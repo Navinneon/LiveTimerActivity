@@ -7,8 +7,8 @@
 import Foundation
 
 class Utils {
-  static func getExactTime(from startDate: Date) -> String {
-    let elapsed = Int(Date().timeIntervalSince(startDate))
+  static func getExactTime(from startDate: Date, to endDate: Date = Date()) -> String {
+    let elapsed = Int(endDate.timeIntervalSince(startDate))
     let hours = elapsed / 3600
     let minutes = (elapsed % 3600) / 60
     let seconds = elapsed % 60

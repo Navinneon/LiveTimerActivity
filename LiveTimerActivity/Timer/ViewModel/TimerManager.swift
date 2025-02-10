@@ -31,7 +31,7 @@ class TimerManager: ObservableObject {
     }
     
     isPaused = timer.isPaused
-    pauseDate = timer.pauseDate ?? Date()
+    pauseDate = timer.pauseDate
     adjustedStartDate = timer.adjustedStartDate ?? Date()
     isTimerRunning = false // Assume false initially
     
@@ -128,11 +128,19 @@ class TimerManager: ObservableObject {
     
     self.activity = nil
     isTimerRunning = false
+    isPaused = false
+    adjustedStartDate = Date() // Reset to ensure UI updates correctly
+    pauseDate = nil
     
     // Remove from Core Data
     TimerDataManager.shared.deleteTimer(name: timerName)
+    
+    // Notify UI to refresh
+    DispatchQueue.main.async {
+      self.objectWillChange.send()
+    }
   }
-  
+
   /// Toggles pause and updates both Live Activity and Core Data
   func togglePause() {
     isPaused.toggle()
@@ -151,9 +159,10 @@ class TimerManager: ObservableObject {
     
     if isPaused {
       pauseDate = Date()
-    } else {
-      let pausedDuration = Date().timeIntervalSince(pauseDate ?? Date())
+    } else if let pauseDate = pauseDate {
+      let pausedDuration = Date().timeIntervalSince(pauseDate)
       adjustedStartDate = adjustedStartDate.addingTimeInterval(pausedDuration)
+      self.pauseDate = nil
     }
     
     let updatedState = TimerActivityAttributes.ContentState(

@@ -46,12 +46,20 @@ struct TimerView: View {
   private var timerStatusView: some View {
     Group {
       if !timerManager.isTimerRunning {
-        Text(Utils.getExactTime(from: Date()))
-          .font(.title)
-      } else if timerManager.isPaused {
+        // Show elapsed time from adjustedStartDate (not running)
         Text(Utils.getExactTime(from: timerManager.adjustedStartDate))
           .font(.title)
+      } else if timerManager.isPaused {
+        // Show elapsed time from adjustedStartDate to pauseDate
+        if let pauseDate = timerManager.pauseDate {
+          Text(Utils.getExactTime(from: timerManager.adjustedStartDate, to: pauseDate))
+            .font(.title)
+        } else {
+          Text(Utils.getExactTime(from: timerManager.adjustedStartDate))
+            .font(.title)
+        }
       } else {
+        // Show live updating relative time
         Text(timerManager.adjustedStartDate, style: .relative)
           .font(.title)
       }
