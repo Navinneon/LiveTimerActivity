@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TimerView: View {
+  @Environment(\.scenePhase) var scenePhase
   @StateObject private var timerManager: TimerManager
       
   init(timerType: TimerType) {
@@ -16,6 +17,13 @@ struct TimerView: View {
   
   var body: some View {
     mainView
+      .onChange(of: scenePhase) { oldPhase, newPhase in
+        if newPhase == .active {
+          Task {
+            timerManager.loadExistingTimer()
+          }
+        }
+      }
   }
   
   private var mainView: some View {

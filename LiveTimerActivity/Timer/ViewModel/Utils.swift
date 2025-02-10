@@ -6,6 +6,12 @@
 //
 import Foundation
 
+enum TimerType: String {
+  case first = "First Timer"
+  case second = "Second Timer"
+  case third = "Third Timer"
+}
+
 class Utils {
   static func getExactTime(from startDate: Date, to endDate: Date = Date()) -> String {
     let elapsed = Int(endDate.timeIntervalSince(startDate))

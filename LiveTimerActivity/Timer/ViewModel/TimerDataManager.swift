@@ -43,7 +43,6 @@ class TimerDataManager {
     }
   }
   
-  /// Updates or creates a timer entry.
   func createOrUpdateTimer(name: String, isPaused: Bool, pauseDate: Date?, adjustedStartDate: Date, activityID: String?) {
     let timer = fetchTimer(for: name) ?? TimerEntity(context: context)
     timer.timerName = name
@@ -61,7 +60,7 @@ class TimerDataManager {
       saveContext()
     }
   }
-  
+
   func saveContext() {
     do {
       try context.save()

@@ -24,25 +24,33 @@ class TimerManager: ObservableObject {
   }
   
   /// Loads any existing timer from Core Data and attempts to restore its Live Activity
-  private func loadExistingTimer() {
+  func loadExistingTimer() {
     guard let timer = TimerDataManager.shared.fetchTimer(for: timerName) else {
-      print("No existing timer found for \(timerName)")
+      print("No existing timer found for \(timerName), setting default values.")
+      
+      // Set default values when no timer is found
+      isPaused = false
+      pauseDate = nil
+      adjustedStartDate = Date()
+      isTimerRunning = false
+      activity = nil
+      
       return
     }
     
+    // Restore timer state from Core Data
     isPaused = timer.isPaused
     pauseDate = timer.pauseDate
     adjustedStartDate = timer.adjustedStartDate ?? Date()
     isTimerRunning = false // Assume false initially
     
-    // Try restoring an existing Live Activity by timerName instead of activityID
+    // Restore an existing Live Activity if available
     if let existingActivity = Activity<TimerActivityAttributes>.activities.first(
       where: { $0.attributes.timerName == timerName }
     ) {
       print("Restoring existing Live Activity for \(timerName)")
       self.activity = existingActivity
       isTimerRunning = true
-      return
     } else {
       startTimerActivityFromSavedState(timer)
     }

@@ -8,10 +8,8 @@
 
 import AppIntents
 import CoreData
+import ActivityKit
 
-import AppIntents
-
-@available(iOS 16.0, *)
 struct PlayPauseTimerIntent: LiveActivityIntent {
   static var title: LocalizedStringResource = "Play/Pause Timer"
   
@@ -29,14 +27,45 @@ struct PlayPauseTimerIntent: LiveActivityIntent {
       throw NSError(domain: "PlayPauseTimerIntentError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Timer name is missing"])
     }
     
-    let timerDataManager = TimerDataManager.shared
-    
-    // Fetch existing timer from Core Data
-    if let timer = timerDataManager.fetchTimer(for: timerName) {
-      timer.isPaused.toggle() // Toggle play/pause state
-      timerDataManager.saveContext() // Save changes
-    } else {
+    // Fetch timer from Core Data
+    let timerManager = TimerDataManager.shared
+    guard let timer = timerManager.fetchTimer(for: timerName) else {
       throw NSError(domain: "PlayPauseTimerIntentError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Timer not found"])
+    }
+    
+    let isPaused = !timer.isPaused
+    let newPauseDate = isPaused ? Date() : nil
+    
+    let updatedAdjustedStartDate: Date
+    if isPaused {
+      updatedAdjustedStartDate = timer.adjustedStartDate ?? Date()
+    } else {
+      // Calculate how much time was paused and adjust the start date
+      let pausedDuration = Date().timeIntervalSince(timer.pauseDate ?? Date())
+      updatedAdjustedStartDate = (timer.adjustedStartDate ?? Date()).addingTimeInterval(pausedDuration)
+    }
+    
+    // Update Core Data
+    timerManager.createOrUpdateTimer(
+      name: timerName,
+      isPaused: isPaused,
+      pauseDate: newPauseDate,
+      adjustedStartDate: updatedAdjustedStartDate,
+      activityID: timer.activityID
+    )
+    
+    // Update Live Activity
+    if let existingActivity = Activity<TimerActivityAttributes>.activities.first(
+      where: { $0.attributes.timerName == timerName }
+    ) {
+      let updatedState = TimerActivityAttributes.ContentState(
+        isPaused: isPaused,
+        pauseDate: newPauseDate,
+        adjustedStartDate: updatedAdjustedStartDate
+      )
+      await existingActivity.update(ActivityContent(state: updatedState, staleDate: nil))
+    } else {
+      print("No Live Activity found for \(timerName)")
     }
     
     return .result()
@@ -60,9 +89,21 @@ struct StopTimerIntent: LiveActivityIntent {
     guard let timerName = timerName else {
       throw NSError(domain: "StopTimerIntentError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Timer name is missing"])
     }
-    let timerDataManager = TimerDataManager.shared
-    timerDataManager.deleteTimer(name: timerName)
+    
+    if let activity = Activity<TimerActivityAttributes>.activities.first(where: { $0.attributes.timerName == timerName }) {
+      let endContent = TimerActivityAttributes.ContentState(
+        isPaused: true,
+        adjustedStartDate: Date()
+      )
+      await activity.end(ActivityContent(state: endContent, staleDate: nil), dismissalPolicy: .immediate)
+    } else {
+      print("No active timer found for \(timerName)")
+    }
+    
+    // Remove timer from Core Data
+    TimerDataManager.shared.deleteTimer(name: timerName)
     
     return .result()
   }
 }
+
